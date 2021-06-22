@@ -34,3 +34,5 @@ build/
 /.mvn/
 /server/src/main/resources/application-test.yml
 /samples/src/main/resources/application-test.yml
+/mvnw.cmd
+/mvnw
