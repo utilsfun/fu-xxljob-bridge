@@ -14,10 +14,6 @@ target/
 .sts4-cache
 
 ### TEST ###
-**/**-test.yml
-**/**-test.xml
-**/**-test.yaml
-**/**-test.properties
 
 ### IntelliJ IDEA ###
 .idea
@@ -36,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 /.mvn/
+/server/src/main/resources/application-dev.yml
