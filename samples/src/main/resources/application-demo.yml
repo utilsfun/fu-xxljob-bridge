@@ -10,6 +10,7 @@ server:
 xxl:
   job:
     admin:
+      #bridge server的部署地址 （通常子网地址,要求可以和 xxl-job-executor 实例连通）
       addresses: http://{bridge地址}/xxl-job-admin
       accessToken:
     executor:

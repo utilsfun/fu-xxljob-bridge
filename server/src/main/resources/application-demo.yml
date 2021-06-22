@@ -11,5 +11,7 @@ fun:
   utils:
     xxljob:
       bridge:
-        adminApi: http://xxljob.tk8s.ldx11.com/xxl-job-admin/api/
-        bridgePath: http://duckdo.vaiwan.com/
+        #xxl-job-admin 的部署地址 （要求可以和 bridge server 连通）
+        adminApi: http://{xxl-job-admin部署地址}/xxl-job-admin/api/
+        #bridge server的部署地址 （通常主网地址,要求可以和 xxl-job-admin 连通）
+        bridgePath: http://{bridge地址}/
