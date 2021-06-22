@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -26,53 +25,39 @@ public class MainConfiguration implements DisposableBean, InitializingBean {
 
     @Autowired
     private ApplicationContext applicationContext;
-
-
-    @Bean
-    public RestTemplate restTemplate(){
-       return new RestTemplate();
-    }
-
     @Autowired
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
 
-//    @Bean
-//    public AdminController adminController(){
-//        return new AdminController();
-//    }
-//
-//    @Bean
-//    public ExecutorController executorController(){
-//        return new ExecutorController();
-//    }
+    public MainConfiguration() {
+        log.info("Initialize Constructor");
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
     //最后一个bean,用于执行config加载后的主过程
     @Bean
-    public void main() throws NoSuchMethodException {
+    public void main() {
         log.info("Initialize main program");
-        //requestMappingHandlerMapping.registerMapping();
-    }
-
-    @Override
-    public void destroy()  {
-        log.info("Destroy ApiAutoConfiguration");
     }
 
 
     //执行顺序 Constructor > @Autowired > @postConstruct > afterPropertiesSet > @Bean (1,2,3,4 有顺序)
+    @Override
+    public void destroy() {
+        log.info("Destroy ApiAutoConfiguration");
+    }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         log.info("Initialize afterPropertiesSet");
     }
 
     @PostConstruct
-    public void postConstruct(){
+    public void postConstruct() {
         log.info("Initialize postConstruct");
-    }
-
-    public MainConfiguration() {
-        log.info("Initialize Constructor");
     }
 }
 

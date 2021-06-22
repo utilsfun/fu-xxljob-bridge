@@ -12,8 +12,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.text.ParseException;
-
 @RestController
 @RequestMapping(value = "xxl-job-executor")
 @Slf4j
@@ -25,7 +23,7 @@ public class ExecutorController {
     @Autowired
     private MainProperties mainProperties;
 
-    {
+    public ExecutorController() {
         log.info("loading ExecutorController");
     }
 
@@ -44,8 +42,8 @@ public class ExecutorController {
         }
     */
     @RequestMapping(value = "/{executor}/beat")
-    public JSONObject beat(@PathVariable String executor,  @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) {
-        return reCall(executor,"log",null,token);
+    public JSONObject beat(@PathVariable String executor, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) {
+        return reCall(executor, "log", null, token);
     }
 
     /*
@@ -67,8 +65,8 @@ public class ExecutorController {
 
     * */
     @RequestMapping(value = "/{executor}/idleBeat")
-    public JSONObject idleBeat(@PathVariable String executor, @RequestBody JSONObject body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) throws ParseException {
-        return reCall(executor,"idleBeat",body,token);
+    public JSONObject idleBeat(@PathVariable String executor, @RequestBody JSONObject body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) {
+        return reCall(executor, "idleBeat", body, token);
     }
 
     /*
@@ -102,8 +100,8 @@ public class ExecutorController {
     * */
 
     @RequestMapping(value = "/{executor}/run")
-    public JSONObject run(@PathVariable String executor, @RequestBody JSONObject body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) throws ParseException {
-        return reCall(executor,"run",body,token);
+    public JSONObject run(@PathVariable String executor, @RequestBody JSONObject body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) {
+        return reCall(executor, "run", body, token);
     }
 
 
@@ -127,8 +125,8 @@ public class ExecutorController {
     * */
 
     @RequestMapping(value = "/{executor}/kill")
-    public JSONObject kill(@PathVariable String executor, @RequestBody JSONObject body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) throws ParseException {
-        return reCall(executor,"kill",body,token);
+    public JSONObject kill(@PathVariable String executor, @RequestBody JSONObject body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) {
+        return reCall(executor, "kill", body, token);
     }
 
 
@@ -161,52 +159,52 @@ public class ExecutorController {
     * */
 
     @RequestMapping(value = "/{executor}/log")
-    public JSONObject log(@PathVariable String executor, @RequestBody JSONObject body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) throws ParseException {
-        return reCall(executor,"log",body,token);
+    public JSONObject log(@PathVariable String executor, @RequestBody JSONObject body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) {
+        return reCall(executor, "log", body, token);
     }
 
-    private JSONObject reCall(String executor,String action,JSON body,String token){
+    private JSONObject reCall(String executor, String action, JSON body, String token) {
 
         //桥地址 转 原执器地址
-        String executorUrl = executor.replaceAll("@","/");
+        String executorUrl = executor.replaceAll("@", "/");
         executorUrl = executorUrl.endsWith("/") ? executorUrl : executorUrl + "/";
 
-        JSONObject info =  new JSONObject();
+        JSONObject info = new JSONObject();
 
-        info.put("executor",executorUrl);
-        info.put("action",action);
-        info.put("token",token);
-        info.put("body",body);
+        info.put("executor", executorUrl);
+        info.put("action", action);
+        info.put("token", token);
+        info.put("body", body);
 
 
         JSONObject result = new JSONObject();
         result.put("code", 500);
         result.put("msg", "remote server fail");
 
-        try{
+        try {
 
             HttpHeaders requestHeaders = new HttpHeaders();
             requestHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-            if(StringUtils.isNotBlank(token)){
-                requestHeaders.set("XXL-JOB-ACCESS-TOKEN",token);
+            if (StringUtils.isNotBlank(token)) {
+                requestHeaders.set("XXL-JOB-ACCESS-TOKEN", token);
             }
 
-            HttpEntity requestHttpEntity = new HttpEntity<JSON>(body,requestHeaders);
+            HttpEntity<JSON> requestHttpEntity = new HttpEntity<>(body, requestHeaders);
 
-            String string = restTemplate.postForObject(executorUrl + action,requestHttpEntity,String.class);
+            String string = restTemplate.postForObject(executorUrl + action, requestHttpEntity, String.class);
 
             result = JSON.parseObject(string);
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             result.put("code", 500);
-            result.put("msg",  e.toString() );
+            result.put("msg", e.toString());
 
         }
 
-        info.put("result",result);
+        info.put("result", result);
         log.info(JSON.toJSONString(info, true));
-        return  result;
+        return result;
     }
 }

@@ -12,11 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class TestController {
 
-    {
+    public TestController() {
         log.info("loading TestController");
     }
+
     @RequestMapping(value = "/**")
-    public void info(HttpServletRequest request){
-        log.info(JSON.toJSONString(request,true));
+    public void info(HttpServletRequest request) {
+        log.info(JSON.toJSONString(request, true));
     }
 }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.text.ParseException;
 
 @RestController
 @RequestMapping(value = "xxl-job-admin/api")
@@ -29,7 +28,7 @@ public class AdminController {
     @Autowired
     private MainProperties mainProperties;
 
-    {
+    public AdminController() {
         log.info("loading AdminController");
     }
 
@@ -86,7 +85,7 @@ public class AdminController {
                 requestHeaders.set("XXL-JOB-ACCESS-TOKEN", token);
             }
 
-            HttpEntity requestHttpEntity = new HttpEntity<JSONObject>(body, requestHeaders);
+            HttpEntity<JSONObject> requestHttpEntity = new HttpEntity<>(body, requestHeaders);
 
             String string = restTemplate.postForObject(mainProperties.getAdminApi() + action, requestHttpEntity, String.class);
 
@@ -129,7 +128,7 @@ public class AdminController {
     }
     * */
     @RequestMapping(value = "/callback")
-    public JSONObject callback(@RequestBody JSONArray body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) throws ParseException {
+    public JSONObject callback(@RequestBody JSONArray body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) {
         return reCall("callback", body, token);
     }
 
@@ -154,12 +153,12 @@ public class AdminController {
     * */
 
     @RequestMapping(value = "/registryRemove")
-    public JSONObject registryRemove(@RequestBody JSONObject body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) throws ParseException {
+    public JSONObject registryRemove(@RequestBody JSONObject body, @RequestHeader("XXL-JOB-ACCESS-TOKEN") @Nullable String token) {
         return reCall("registryRemove", body, token);
     }
 
 
-    private JSONObject reCall(String action, JSON body, String token) throws ParseException {
+    private JSONObject reCall(String action, JSON body, String token) {
 
         JSONObject info = new JSONObject();
         info.put("admin", mainProperties.getAdminApi() + action);
@@ -181,7 +180,7 @@ public class AdminController {
                 requestHeaders.set("XXL-JOB-ACCESS-TOKEN", token);
             }
 
-            HttpEntity requestHttpEntity = new HttpEntity<JSON>(body, requestHeaders);
+            HttpEntity<JSON> requestHttpEntity = new HttpEntity<>(body, requestHeaders);
 
             result = restTemplate.postForObject(mainProperties.getAdminApi() + action, requestHttpEntity, JSONObject.class);
 

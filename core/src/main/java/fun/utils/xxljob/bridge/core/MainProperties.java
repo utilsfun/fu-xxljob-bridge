@@ -13,10 +13,11 @@ public class MainProperties {
     private String bridgePath;
 
     public String getAdminApi() {
-        return StringUtils.endsWith(adminApi,"/") ? adminApi : adminApi + "/";
+        return StringUtils.endsWith(adminApi, "/") ? adminApi : adminApi + "/";
     }
+
     public String getBridgePath() {
-        return StringUtils.endsWith(bridgePath,"/") ? bridgePath : bridgePath + "/";
+        return StringUtils.endsWith(bridgePath, "/") ? bridgePath : bridgePath + "/";
     }
 
 }
