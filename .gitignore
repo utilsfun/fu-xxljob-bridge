@@ -33,3 +33,4 @@ build/
 .vscode/
 /.mvn/
 /server/src/main/resources/application-dev.yml
+/samples/src/main/resources/application-test.yml
