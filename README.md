@@ -15,6 +15,7 @@ A0[执行器0] --> |注册| B[管理器]
 A1[执行器1] -->|注册| B
 end
 ```
+
 #### 不同网段时（执行器在K8S集群内）
 ```mermaid
 graph TD
@@ -54,7 +55,7 @@ C --> |驱动|X0
 
 1.  xxljob-bridge 服务放在 xxljob-executor 同一子网
 2.  同一应用的多个节点启动后 xxljob-executor 向 xxljob-bridge 服务注册(原来是向xxljob-admin注册)
-3.  xxljob-bridge把注册的内容中的executor地址改为 xxljob-bridge代理地址  如:原地址为http://10.0.12.3:9999/ 改为 http://bridge.public.yourdomain.com/xxl-job-executor/http:@@10.0.12.3:9999/
+3.  xxljob-bridge把注册的内容中的executor地址改为 xxljob-bridge代理地址  如:原地址为http://10.0.12.3:9999/ 改为 http://bridge.public.yourdns.com/xxl-job-executor/http:@@10.0.12.3:9999/
 4.  xxljob-bridge把篡改后地注册信息提交到xxljob-admin注册
 5.  xxljob-admin 发驱动调用 到xxljob-bridge
 6.  xxljob-bridge 分解URL，转发到xxljob-executor实例
@@ -73,14 +74,25 @@ bridge->>executor: 驱动
 
 ### SpringBoot方式
 #### Maven引用
-
+pom.xml 加入引用
 ```xml
 <dependency>
 	<groupId>fun.utils</groupId>
-	<artifactId>xxljob.bridge.starter</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>fu-xxljob-bridge-starter</artifactId>
+	<version>0.0.1</version>
 </dependency>
 ```
+pom.xml 加入仓库
+```xml
+<repositories>
+	<repository>
+		<id>utilsfun</id>
+		<name>utilsfun</name>
+      <url>https://utilsfun.oss-cn-shenzhen.aliyuncs.com/repository/</url>
+    </repository>
+</repositories>
+```
+
 #### 启动
 不用写代码，引用xxljob.bridge.starter的Maven包即可
 启用 /xxl-job-admin /xxl-job-executor 两个RestController
@@ -105,4 +117,3 @@ fun:
         #bridge server的部署地址 （通常主网地址,要求可以和 xxl-job-admin 连通）
         bridgePath: http://{bridge地址}/
 ```
-
