@@ -1,0 +1,19 @@
+# 应用名称
+spring:
+  application:
+    name: xxljob.bridge.samples
+
+# 应用服务 WEB 访问端口
+server:
+  port: 8081
+
+xxl:
+  job:
+    admin:
+      addresses: http://{bridge地址}/xxl-job-admin
+      accessToken:
+    executor:
+      appname: xxl-job-executor-sample
+      address:
+      ip:
+      port: 7001
