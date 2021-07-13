@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import javax.annotation.PostConstruct;
 
 @Slf4j
-@Configuration
+@Configuration("fu-xxljob-bridge-core.MainConfiguration")
 @EnableConfigurationProperties(MainProperties.class)
 @ComponentScan("fun.utils.xxljob.bridge.core")
 public class MainConfiguration implements DisposableBean, InitializingBean {
@@ -25,6 +26,7 @@ public class MainConfiguration implements DisposableBean, InitializingBean {
 
     @Autowired
     private ApplicationContext applicationContext;
+
     @Autowired
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
 
@@ -33,6 +35,7 @@ public class MainConfiguration implements DisposableBean, InitializingBean {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
